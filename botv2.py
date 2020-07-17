@@ -74,7 +74,7 @@ async def send_mus(message: types.Message):
 		except:
 		    await message.answer('Извините, мне не удалось найти трек, возможно позже будет добавлен ресурс')
 		result_download_url = 'https://zaycev.net' + download
-		await message.answer('Для загрузки трека перейдите по ссылке:\n'result_download_url)
+		await message.answer('Для загрузки трека перейдите по ссылке:\n' + result_download_url)
 
 
 if __name__ == '__main__':
