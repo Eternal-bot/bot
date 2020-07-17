@@ -30,6 +30,7 @@ async def send_mus(message: types.Message):
 	if last_message == '/get_music':
 		lst_sound = message.text.split()
 		check = True
+		sound, url_with_sound, result, aft = '', '', '', ''
 		if len(lst_sound) == 1:
 			sound = str(lst_sound[0])
 		else:
@@ -52,7 +53,6 @@ async def send_mus(message: types.Message):
 		    a = j.split()
 		    ind = a.index('–')
 		    del a[ind]
-		    print(' '.join(a))
 		    for i in lst_sound:
 		        res = re.findall(i, j)
 		        c.append(res)
