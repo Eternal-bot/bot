@@ -29,10 +29,7 @@ async def get_music(message: types.Message):
 async def send_mus(message: types.Message):
 	if last_message == '/get_music':
 		lst_sound = message.text.split()
-		sound = ''
-		url_with_sound = ''
-		result = ''
-		aft = ''
+		check = True
 		if len(lst_sound) == 1:
 			sound = str(lst_sound[0])
 		else:
@@ -61,7 +58,11 @@ async def send_mus(message: types.Message):
 		        c.append(res)
 		    if (len(c) == len(lst_sound)) and (len(c) == len(a)):
 		        ind = cont
+		        check = False
+		        break
 		    c = []
+		    if not check:
+		    	break
 
 		url_with_sound = re.findall('/.*?l', str(s[ind]))[-1]
 		url = 'https://zaycev.net' + url_with_sound
