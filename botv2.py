@@ -30,7 +30,7 @@ async def send_mus(message: types.Message):
 		ydl_opts = {
 			'format': 'bestaudio/best',
 			'postprocessors': [{
-				'key': 'FfmpegExtractAudio',
+				'key': 'FFmpegExtractAudio',
 				'preferredcodec': 'mp3',
 				'preferredquality': '192'
 			}],
