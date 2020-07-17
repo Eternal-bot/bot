@@ -23,7 +23,7 @@ async def get_music(message: types.Message):
 	last_message = message.text
 
 
-@dp.message_handler(lambda message: message.startswith('https'))
+@dp.message_handler(lambda message: message.text.startswith('https'))
 async def send_mus(message: types.Message):
 	if last_message == '/get_music':
 		url = message.text
