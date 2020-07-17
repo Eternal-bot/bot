@@ -42,7 +42,6 @@ pygame==1.9.6
 pyglet==1.5.7
 Pygments==2.6.1
 pyparsing==2.4.7
-pypiwin32==223
 pyTelegramBotAPI==3.7.2
 pytest==5.4.3
 python-docx==0.8.10
