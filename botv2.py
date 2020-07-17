@@ -50,17 +50,16 @@ async def send_mus(message: types.Message):
 		lst = []
 		for i in s:
 		    lst.append(i.get_text())
-		finder = ['Morgenshtern', 'Кадиллак']
 		c = []
 		for cont, j in enumerate(lst):
 		    a = j.split()
 		    ind = a.index('–')
 		    del a[ind]
 		    print(' '.join(a))
-		    for i in finder:
+		    for i in lst_sound:
 		        res = re.findall(i, j)
 		        c.append(res)
-		    if (len(c) == len(finder)) and (len(c) == len(a)):
+		    if (len(c) == len(lst_sound)) and (len(c) == len(a)):
 		        ind = cont
 		    c = []
 
