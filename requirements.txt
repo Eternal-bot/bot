@@ -49,7 +49,6 @@ python-docx==0.8.10
 python-for-android==2020.6.2
 pytoml==0.1.21
 pytz==2016.10
-pywin32==228
 requests==2.24.0
 sdl==0.0.0
 sh==1.13.1
