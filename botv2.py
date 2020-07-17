@@ -69,9 +69,12 @@ async def send_mus(message: types.Message):
 		r = requests.get(url)
 		data = BS(r.content, 'html.parser')
 		download_class = data.find(class_='button-download__link')
-		download = re.findall('/.+?n', str(download_class))[0]
+		try:
+		    download = re.findall('/.+?n', str(download_class))[0]
+		except:
+		    await message.answer('Извините, мне не удалось найти трек, возможно позже будет добавлен ресурс')
 		result_download_url = 'https://zaycev.net' + download
-		await message.answer(result_download_url)
+		await message.answer('Для загрузки трека перейдите по ссылке:\n'result_download_url)
 
 
 if __name__ == '__main__':
