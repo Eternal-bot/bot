@@ -79,16 +79,8 @@ async def send_mus(message: types.Message):
 		except:
 			await message.answer('Извините, мне не удалось найти трек, возможно позже будет добавлен ресурс')
 		result_download_url = 'https://zaycev.net' + download
-		with open(download_music(result_download_url), 'rb') as f:
-			await bot.send_audio(chat_id=message.from_user.id, audio=f)
-
-
-def download_music(url):
-	r = requests.get(url, allow_redirects=True)
-	filename = os.path.basename(a[0])
-	open(filename, 'wb').write(r.content)
-	return filename
-
+		r = requests.get(result_download_url, allow_redirects=True)
+		await bot.send_audio(chat_id=message.from_user.id, audio=r.content)
 
 
 if __name__ == '__main__':
