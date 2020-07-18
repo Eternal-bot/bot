@@ -80,7 +80,8 @@ async def send_mus(message: types.Message):
 			await message.answer('Извините, мне не удалось найти трек, возможно позже будет добавлен ресурс')
 		result_download_url = 'https://zaycev.net' + download
 		r = requests.get(result_download_url, allow_redirects=True)
-		await bot.send_audio(chat_id=message.from_user.id, audio=r.content)
+		end = r.content
+		await bot.send_audio(chat_id=message.from_user.id, audio=end)
 
 
 if __name__ == '__main__':
