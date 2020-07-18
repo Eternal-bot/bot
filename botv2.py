@@ -81,7 +81,7 @@ async def send_mus(message: types.Message):
 		result_download_url = 'https://zaycev.net' + download
 		r = requests.get(result_download_url, allow_redirects=True)
 		end = r.content
-		await bot.send_audio(chat_id=message.from_user.id, audio=end + '.mp3')
+		await bot.send_audio(chat_id=message.from_user.id, audio=str(end))
 
 
 if __name__ == '__main__':
