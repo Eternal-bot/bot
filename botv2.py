@@ -30,7 +30,7 @@ async def get_music(message: types.Message):
 @dp.message_handler(lambda message: message.text.startswith('!'))
 async def send_mus(message: types.Message):
 	if last_message == '/get_music':
-		global lst_sound
+		global lst_sound, a
 		lst_sound = message.text.split()
 		red = lst_sound.pop(0).lstrip('!')
 		lst_sound.append(red)
@@ -85,8 +85,7 @@ async def send_mus(message: types.Message):
 
 def download_music(url):
 	r = requests.get(url, allow_redirects=True)
-	a = urlparse(url)
-	filename = os.path.basename(a.path)
+	filename = os.path.basename(a[0])
 	open(filename, 'wb').write(r.content)
 	return filename
 
