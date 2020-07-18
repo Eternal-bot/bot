@@ -2,9 +2,11 @@ from aiogram import types, Bot, executor, Dispatcher
 import asyncio
 import logging
 import requests
+import os.path
 import os
 from bs4 import BeautifulSoup as BS
 import re
+from urllib.parse import urlparse
 
 
 TOKEN = '1305472584:AAEzdWPaSWiW9Xv6EobStVFuJA_zBLF_dq4'
@@ -28,7 +30,10 @@ async def get_music(message: types.Message):
 @dp.message_handler(lambda message: message.text.startswith('!'))
 async def send_mus(message: types.Message):
 	if last_message == '/get_music':
+		global lst_sound
 		lst_sound = message.text.split()
+		red = lst_sound.pop(0).lstrip('!')
+		lst_sound.append(red)
 		check = True
 		sound, url_with_sound, result, aft = '', '', '', ''
 		if len(lst_sound) == 1:
@@ -70,11 +75,21 @@ async def send_mus(message: types.Message):
 		data = BS(r.content, 'html.parser')
 		download_class = data.find(class_='button-download__link')
 		try:
-		    download = re.findall('/.+?n', str(download_class))[0]
+			download = re.findall('/.+?n', str(download_class))[0]
 		except:
-		    await message.answer('Извините, мне не удалось найти трек, возможно позже будет добавлен ресурс')
+			await message.answer('Извините, мне не удалось найти трек, возможно позже будет добавлен ресурс')
 		result_download_url = 'https://zaycev.net' + download
-		await message.answer('Для загрузки трека перейдите по ссылке:\n' + result_download_url)
+		with open(download_music(result_download_url), 'rb') as f:
+			await bot.send_audio(chat_id=message.from_user.id, audio=f)
+
+
+def download_music(url):
+	r = requests.get(url, allow_redirects=True)
+	a = urlparse(url)
+	filename = os.path.basename(a.path)
+	open(filename, 'wb').write(r.content)
+	return filename
+
 
 
 if __name__ == '__main__':
