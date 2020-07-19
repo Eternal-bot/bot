@@ -62,7 +62,7 @@ async def current_bitcoin_rate(message: types.Message):
 def get_base_keybord():
 	keyboard = types.InlineKeyboardMarkup(resize_keyboard=True)
 	res = types.InlineKeyboardButton(text='Найти песню', callback_data='search_music')
-	res1 = types.InlineKeyboardButton(text='Скачать любое приложение бесплатно 😈', callback_data='bitcoin')
+	res1 = types.InlineKeyboardButton(text='Скачать любое приложение бесплатно 😈')
 	res2 = types.InlineKeyboardButton(text='Курс биткоина', callback_data='bitcoin')
 	keyboard.add(res)
 	keyboard.add(res1)
