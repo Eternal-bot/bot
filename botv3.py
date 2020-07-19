@@ -14,13 +14,14 @@ logging.basicConfig(level=logging.INFO)
 
 @dp.message_handler(commands=['start'])
 async def start_bot(message: types.Message):
-	await message.answer('Привет!')
+	global mes_id
+	mes_id = message.chat.id
+	await bot.send_message(chat_id=message.chat.id, text='Привет! Смотри что я могу:', reply_markup=get_base_keybord())
 
 
-@dp.message_handler(commands=['search_music'])
-async def search_music(message: types.Message):
-	await message.answer('Введите название трека и исполнителя')
-	name_song_and_singer = message.text
+@dp.callback_query_handler(lambda call: call.data == 'search_music')
+async def search_music(call):
+	await bot.send_message(chat_id=mes_id, text='Введите название трека и исполнителя')
 
 
 @dp.message_handler(lambda message: message.text.startswith('!'))
@@ -41,8 +42,40 @@ async def download_music(message: types.Message):
 	find_download_url = data.find_all(class_='btn view-action-btn pull-right')
 	download_url = re.findall('".*?"', str(find_download_url))[2].strip('"').split('amp;')
 	and_the_end = ''.join(download_url)
-	await bot.send_audio(chat_id=message.from_user.id, audio=and_the_end)
+	await bot.send_audio(chat_id=message.from_user.id, audio=and_the_end, reply_markup=reply_button())
+
+
+@dp.callback_query_handler(lambda call: call.data == 'bitcoin')
+async def current_bitcoin_rate(call):
+	url = 'https://yobit.net/api/2/btc_usd/ticker'
+	r = requests.get(url).json()
+	await bot.send_message(chat_id=mes_id, text=str(r['ticker']['sell']) + ' ' + 'долларов США', reply_markup=reply_button())
+
+
+@dp.message_handler(lambda message: message.text == 'Доступные действия')
+async def current_bitcoin_rate(message: types.Message):
+	global mes_id
+	mes_id = message.chat.id
+	await bot.send_message(chat_id=mes_id, text='Доступные действия:', reply_markup=get_base_keybord())
+
+
+def get_base_keybord():
+	keyboard = types.InlineKeyboardMarkup(resize_keyboard=True)
+	res = types.InlineKeyboardButton(text='Найти песню', callback_data='search_music')
+	res1 = types.InlineKeyboardButton(text='Скачать любое приложение бесплатно 😈', callback_data='bitcoin')
+	res2 = types.InlineKeyboardButton(text='Курс биткоина', callback_data='bitcoin')
+	keyboard.add(res)
+	keyboard.add(res1)
+	keyboard.add(res2)
+	return keyboard
+
+
+def reply_button():
+	button = types.ReplyKeyboardMarkup(resize_keyboard=True)
+	res = types.KeyboardButton(text='Доступные действия')
+	button.add(res)
+	return button
 
 
 if __name__ == '__main__':
-	executor.start_polling(dp, skip_updates=True)
+	executor.start_polling(dp, skip_updates=True) 
