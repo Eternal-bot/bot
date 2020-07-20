@@ -65,14 +65,17 @@ async def download_files(message: types.Message):
 	elif last_message == 'app':
 		app = message.text.split()
 		lst = parsing.download_app(app)
-		await bot.send_photo(chat_id=mes_id, photo=lst['picture'], caption=lst['name_app'] + '\n' + lst['description'] + '\n' + lst['download_url'])
+		try:
+			await bot.send_photo(chat_id=mes_id, photo=lst['picture'], caption=lst['name_app'] + '\n' + lst['description'] + '\n' + lst['download_url'])
+		except:
+			await bot.send_message(chat_id=mes_id, text='Извините, к сожалению ничего не найдено 😔')
 
 
 
 def get_base_keybord():
 	keyboard = types.InlineKeyboardMarkup(resize_keyboard=True)
 	res = types.InlineKeyboardButton(text='Найти песню 🤩', callback_data='search_music')
-	res1 = types.InlineKeyboardButton(text='Скачать любое приложение бесплатно 😈', callback_data='app')
+	res1 = types.InlineKeyboardButton(text='Скачать приложение или игру бесплатно 😈', callback_data='app')
 	res2 = types.InlineKeyboardButton(text='Курс биткоина 🤑', callback_data='bitcoin')
 	keyboard.add(res)
 	keyboard.add(res1)
