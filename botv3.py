@@ -65,7 +65,7 @@ async def download_files(message: types.Message):
 	elif last_message == 'app':
 		app = message.text.split()
 		lst = parsing.download_app(app)
-		await bot.send_photo(chat_id=mes_id, photo=lst['picture'], caption=lst['name_app'] + '\n' + lst['description'] + '\n' + lst['download_url'])
+		await bot.send_photo(chat_id=mes_id, photo=lst['picture'], caption=lst['name_app'] + '\n' + lst['description'] + '\n' + lst['download_url'], reply_markup=reply_button())
 
 
 def get_base_keybord():
