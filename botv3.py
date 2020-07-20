@@ -4,6 +4,7 @@ import logging
 import requests
 from bs4 import BeautifulSoup as BS
 import re
+import parsing
 
 
 TOKEN = '1305472584:AAEzdWPaSWiW9Xv6EobStVFuJA_zBLF_dq4'
@@ -21,28 +22,9 @@ async def start_bot(message: types.Message):
 
 @dp.callback_query_handler(lambda call: call.data == 'search_music')
 async def search_music(call):
-	await bot.send_message(chat_id=mes_id, text='Введите название трека и исполнителя')
-
-
-@dp.message_handler(lambda message: message.text.startswith('!'))
-async def download_music(message: types.Message):
-	request = message.text.split()
-	elem = request.pop(0).lstrip('!')
-	request.append(elem)
-	url = 'https://mp3lav.xn--41a.wiki/search'
-	r = requests.get(url, params={
-			'query': '%20'.join(request)
-		})
-	data = BS(r.content, 'html.parser')
-	url_song = data.find(class_='special-title')
-	url_songg = re.findall('".*?"', str(url_song))[1].strip('"')
-	url_song = 'https://mp3lav.xn--41a.wiki' + url_songg
-	r = requests.get(url_song)
-	data = BS(r.content, 'html.parser')
-	find_download_url = data.find_all(class_='btn view-action-btn pull-right')
-	download_url = re.findall('".*?"', str(find_download_url))[2].strip('"').split('amp;')
-	and_the_end = ''.join(download_url)
-	await bot.send_audio(chat_id=message.from_user.id, audio=and_the_end, reply_markup=reply_button())
+	global last_message
+	last_message = call.data
+	await bot.send_message(chat_id=mes_id, text='Введите название песни и исполнителя')
 
 
 @dp.callback_query_handler(lambda call: call.data == 'bitcoin')
@@ -52,6 +34,13 @@ async def current_bitcoin_rate(call):
 	await bot.send_message(chat_id=mes_id, text=str(r['ticker']['sell']) + ' ' + 'долларов США', reply_markup=reply_button())
 
 
+@dp.callback_query_handler(lambda call: call.data == 'app')
+async def download_app(call):
+	global last_message
+	last_message = 'app'
+	await bot.send_message(chat_id=mes_id, text='Введите название приложения')
+
+
 @dp.message_handler(lambda message: message.text == 'Доступные действия')
 async def current_bitcoin_rate(message: types.Message):
 	global mes_id
@@ -59,11 +48,32 @@ async def current_bitcoin_rate(message: types.Message):
 	await bot.send_message(chat_id=mes_id, text='Доступные действия:', reply_markup=get_base_keybord())
 
 
+@dp.message_handler(lambda message: message.text == 'Стоп')
+async def current_bitcoin_rate(message: types.Message):
+	global last_message
+	last_message = '0'
+
+
+@dp.message_handler(lambda message: message.text)
+async def download_files(message: types.Message):
+	global last_message, res
+	if last_message == 'search_music':
+		request = message.text.split()
+		result = parsing.download_music(request)
+		await bot.send_audio(chat_id=mes_id, audio=result, reply_markup=reply_button())
+
+	elif last_message == 'app':
+		app = message.text.split()
+		lst = parsing.download_app(app)
+		await bot.send_photo(chat_id=mes_id, photo=lst['picture'], caption=lst['name_app'] + '\n' + lst['description'] + '\n' + lst['download_url'])
+
+
+
 def get_base_keybord():
 	keyboard = types.InlineKeyboardMarkup(resize_keyboard=True)
-	res = types.InlineKeyboardButton(text='Найти песню', callback_data='search_music')
-	res1 = types.InlineKeyboardButton(text='Скачать любое приложение бесплатно 😈', callback_data='bitcoi')
-	res2 = types.InlineKeyboardButton(text='Курс биткоина', callback_data='bitcoin')
+	res = types.InlineKeyboardButton(text='Найти песню 🤩', callback_data='search_music')
+	res1 = types.InlineKeyboardButton(text='Скачать любое приложение бесплатно 😈', callback_data='app')
+	res2 = types.InlineKeyboardButton(text='Курс биткоина 🤑', callback_data='bitcoin')
 	keyboard.add(res)
 	keyboard.add(res1)
 	keyboard.add(res2)
