@@ -75,7 +75,7 @@ async def download_files(message: types.Message):
 def get_base_keybord():
 	keyboard = types.InlineKeyboardMarkup(resize_keyboard=True)
 	res = types.InlineKeyboardButton(text='Найти песню 🤩', callback_data='search_music')
-	res1 = types.InlineKeyboardButton(text='Скачать приложение или игру бесплатно 😈', callback_data='app')
+	res1 = types.InlineKeyboardButton(text='Скачать приложение или игру бесплатно 😈(в основном игры)', callback_data='app')
 	res2 = types.InlineKeyboardButton(text='Курс биткоина 🤑', callback_data='bitcoin')
 	keyboard.add(res)
 	keyboard.add(res1)
