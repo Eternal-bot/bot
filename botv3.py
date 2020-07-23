@@ -18,7 +18,6 @@ async def start_bot(message: types.Message):
 	global mes_id
 	mes_id = message.chat.id
 	await bot.send_message(chat_id=message.chat.id, text='Привет! Смотри что я могу:', reply_markup=get_base_keybord())
-	await bot.send_message(chat_id=message.chat.id, text='Если вдруг бот не отвечает попробуйте нажать "Доступные функции"'
 
 
 @dp.callback_query_handler(lambda call: call.data == 'search_music')
@@ -26,9 +25,9 @@ async def search_music(call):
 	global last_message
 	last_message = call.data
 	try:
-	    await bot.send_message(chat_id=mes_id, text='Введите название песни и исполнителя')
+		await bot.send_message(chat_id=mes_id, text='Введите название песни и исполнителя')
 	except:
-	    pass
+		pass
 
 
 @dp.callback_query_handler(lambda call: call.data == 'bitcoin')
@@ -43,10 +42,9 @@ async def download_app(call):
 	global last_message
 	last_message = 'app'
 	try:
-	    await bot.send_message(chat_id=mes_id, text='Введите название приложения')
+		await bot.send_message(chat_id=mes_id, text='Введите название приложения')
 	except:
-	    pass
-
+		pass
 
 
 @dp.message_handler(lambda message: message.text == 'Доступные действия')
