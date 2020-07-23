@@ -25,7 +25,10 @@ async def start_bot(message: types.Message):
 async def search_music(call):
 	global last_message
 	last_message = call.data
-	await bot.send_message(chat_id=mes_id, text='Введите название песни и исполнителя')
+	try:
+	    await bot.send_message(chat_id=mes_id, text='Введите название песни и исполнителя')
+	except:
+	    pass
 
 
 @dp.callback_query_handler(lambda call: call.data == 'bitcoin')
@@ -39,7 +42,10 @@ async def current_bitcoin_rate(call):
 async def download_app(call):
 	global last_message
 	last_message = 'app'
-	await bot.send_message(chat_id=mes_id, text='Введите название приложения')
+	try:
+	    await bot.send_message(chat_id=mes_id, text='Введите название приложения')
+	except:
+	    pass
 
 
 
