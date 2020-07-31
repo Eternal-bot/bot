@@ -18,7 +18,12 @@ def download_music(request):
 	find_download_url = data.find_all(class_='btn view-action-btn pull-right')
 	download_url = re.findall('".*?"', str(find_download_url))[2].strip('"').split('amp;')
 	and_the_end = ''.join(download_url)
-	return and_the_end
+        r = requests.get(and_the_end)
+        data = BS(r.content, "html.parser")
+        await asyncio sleep(5)
+        fclass = data.find_all(class_="download_button")
+        url = re.findall('".*?"', str(fclass)).strip('"')
+	return url
 
 
 def download_app(request):
