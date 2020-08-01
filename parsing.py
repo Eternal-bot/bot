@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup as BS
 import asyncio
 
 
-def download_music(request):
+async def download_music(request):
 	url = 'https://mp3lav.xn--41a.wiki/search'
 	r = requests.get(url, params={
 			'query': '%20'.join(request)
