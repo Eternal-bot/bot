@@ -2,9 +2,10 @@ import requests
 import re
 from bs4 import BeautifulSoup as BS
 import asyncio
+import time
 
 
-async def download_music(request):
+def download_music(request):
 	url = 'https://mp3lav.xn--41a.wiki/search'
 	r = requests.get(url, params={
 			'query': '%20'.join(request)
@@ -20,7 +21,7 @@ async def download_music(request):
 	and_the_end = ''.join(download_url)
 	r = requests.get(and_the_end)
 	data = BS(r.content, "html.parser")
-	await asyncio.sleep(5)
+	time.sleep(5)
 	find_class = data.find_all(class_="download-button")[0]
 	find_url = re.findall('".*?"', str(find_class))[0].strip('"')
 	return find_url
