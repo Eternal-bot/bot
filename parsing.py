@@ -2,6 +2,7 @@ import requests
 import re
 from bs4 import BeautifulSoup as BS
 import asyncio
+from youtube_dl import YoutubeDL
 
 
 def download_music(request):
@@ -11,10 +12,9 @@ def download_music(request):
 		})
 	data = BS(r.content, 'html.parser')
 	url_song = data.find(class_='play-button')
-	url_songg = re.findall('h.*?"', str(url_song))[0].strip('"').split('amp;')
+	url_songg = re.findall('".*?"', str(url_song))[1].strip('"').split('amp;')
 	result = ''.join(url_songg)
 	return result
-	
 
 
 def download_app(request):

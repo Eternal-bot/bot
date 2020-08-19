@@ -5,6 +5,8 @@ import requests
 from bs4 import BeautifulSoup as BS
 import re
 import parsing
+from urllib.parse import unquote
+
 
 
 TOKEN = '1305472584:AAEzdWPaSWiW9Xv6EobStVFuJA_zBLF_dq4'
@@ -67,7 +69,11 @@ async def download_files(message: types.Message):
 	if last_message == 'search_music':
 		request = message.text.split()
 		result = parsing.download_music(request)
-		await bot.send_audio(chat_id=mes_id, audio=result, reply_markup=reply_button())
+		try:
+			await bot.send_audio(chat_id=mes_id, audio=result, reply_markup=reply_button())
+		except:
+			result += "mp3"
+			await bot.send_audio(chat_id=mes_id, audio=result, reply_markup=reply_button())
 
 	elif last_message == 'app':
 		app = message.text.split()
