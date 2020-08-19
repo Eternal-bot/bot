@@ -69,6 +69,8 @@ async def download_files(message: types.Message):
 	if last_message == 'search_music':
 		request = message.text.split()
 		result = parsing.download_music(request)
+		await bot.send_message(chat_id=mes_id, text="Ожидайте...")
+		await bot.send_message(chat_id=mes_id, text="Постараюсь что-нибудь найти для вас😊")
 		try:
 			await bot.send_audio(chat_id=mes_id, audio=result, reply_markup=reply_button())
 		except:
